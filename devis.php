@@ -1,7 +1,7 @@
 <?php
 
 // ---------------------- VARIABLES ----------------------------
-const TAUX_TVA = 20 ;
+const TAUX_TVA = 20;
 
 /** -------------------------- FONCTION calculerPrixTtcAnnuel ----------------------------
  * 
@@ -47,7 +47,7 @@ function calculerPrixTtcAnnuel($nbAdherents, $nbSections, $federation)
         case ($nbAdherents >= 1001 and $nbAdherents <= 10000):
             # A partir de +1000 -> 70€ HT par tranche de 1000 adhérents (une tranche entamée est une tranche  comptée)
             // nombre de tranche compté
-            $nbTranches = ceil($nbAdherents/1000);
+            $nbTranches = ceil($nbAdherents / 1000);
             $prixHTAdherents = 70 * $nbTranches * 12;
             break;
 
@@ -55,70 +55,78 @@ function calculerPrixTtcAnnuel($nbAdherents, $nbSections, $federation)
             # Au-dessus de 10000 -> 1000€/mois HT 
             $prixHTAdherents = 1000 * 12;
             break;
-
     }
 
 
     // prix si reduction " Fédération de Gymnastique (“G”) -> 15% de réduction sur le cout des adhérents "
-    if($federation == "G"){
-        $prixHTAdherents = $prixHTAdherents - ($prixHTAdherents*15/100);
+    if ($federation == "G") {
+        $prixHTAdherents = $prixHTAdherents - ($prixHTAdherents * 15 / 100);
     }
 
     // prix TTC adherents :
-    $prixTTCAdherents = $prixHTAdherents + ($prixHTAdherents * TAUX_TVA /100 );
+    $prixTTCAdherents = $prixHTAdherents + ($prixHTAdherents * TAUX_TVA / 100);
 
 
     //--------- calcul prix TTC des section sur 12 mois :
-    
+
     $prixHTsections = 0;
     $prixTTCsections = 0;
     $nbSectionApayer = $nbSections;
 
     # - une section est offerte si le club possède  plus de 1000 adhérents. 
-    if($nbAdherents>1000 ){
+    if ($nbAdherents > 1000) {
         $nbSectionApayer--;
     }
     # - Fédération de Natation (“N”) -> 3 sections offertes 
-    if($federation =="N"){
-        $nbSectionApayer=$nbSectionApayer-3;
+    if ($federation == "N") {
+        $nbSectionApayer = $nbSectionApayer - 3;
     }
 
-    if($nbSectionApayer>0){
+    if ($nbSectionApayer > 0) {
         //calcul du prix HT des section sur 12 mois 
         # 5€/section/mois HT
         $prixHTsections = $nbSectionApayer * 5 * 12;
 
         #- Fédération de Basketball (“B”) -> 30% de réduction sur le cout des sections
-        if($federation == "B"){
-            $prixHTsections = $prixHTsections - ($prixHTsections*30/100);
+        if ($federation == "B") {
+            $prixHTsections = $prixHTsections - ($prixHTsections * 30 / 100);
         }
     }
 
-        // prix TTC section :
-        $prixTTCsections = $prixHTsections + ($prixHTsections * TAUX_TVA /100 );
+    // prix TTC section :
+    $prixTTCsections = $prixHTsections + ($prixHTsections * TAUX_TVA / 100);
+    
+    // test prix ttc adherent
+    // return $prixTTCAdherents
+    
+    // test prix ttc section
+    // return $prixTTCAdherents
 
-    //test
-    return $prixTTCsections;
-
+    //prix total TTC a retourné
+    return $prixTTCAdherents + $prixTTCsections;
 }
 
 //test pour calcul prix adherents
-// echo "pour 60 adherents attendu :144 , obetenu: ". calculerPrixTtcAnnuel(60,0,"autre") ."<br>";
-// echo "pour 100 adherents attendu :144 , obetenu: ". calculerPrixTtcAnnuel(100,0,"autre") ."<br>";
-// echo "pour 100 adherents et fed G attendu :122,40  , obetenu: ". calculerPrixTtcAnnuel(100,0,"G") ."<br>";
-// echo "pour 101 adherents attendu :145.44 , obetenu: ". calculerPrixTtcAnnuel(101,0,"autre") ."<br>";
-// echo "pour 503 adherents attendu :579.45 , obetenu: ". calculerPrixTtcAnnuel(503,0,"autre") ."<br>";
-// echo "pour 3005 adherents attendu :4032 , obetenu: ". calculerPrixTtcAnnuel(3005,0,"autre") ."<br>";
-// echo "pour 3005 adherents et fed G attendu :3427.2 , obetenu: ". calculerPrixTtcAnnuel(3005,0,"G") ."<br>";
-// echo "pour 10001 adherents attendu :14400 , obetenu: ". calculerPrixTtcAnnuel(10001,0,"autre") ."<br>";
-// echo "pour 10001 adherents et fed G attendu :12240 , obetenu: ". calculerPrixTtcAnnuel(10001,0,"G") ."<br>";
+// echo "pour 60 adherents attendu :144 , obtenu: ". calculerPrixTtcAnnuel(60,0,"autre") ."<br>";
+// echo "pour 100 adherents attendu :144 , obtenu: ". calculerPrixTtcAnnuel(100,0,"autre") ."<br>";
+// echo "pour 100 adherents et fed G attendu :122,40  , obtenu: ". calculerPrixTtcAnnuel(100,0,"G") ."<br>";
+// echo "pour 101 adherents attendu :145.44 , obtenu: ". calculerPrixTtcAnnuel(101,0,"autre") ."<br>";
+// echo "pour 503 adherents attendu :579.45 , obtenu: ". calculerPrixTtcAnnuel(503,0,"autre") ."<br>";
+// echo "pour 3005 adherents attendu :4032 , obtenu: ". calculerPrixTtcAnnuel(3005,0,"autre") ."<br>";
+// echo "pour 3005 adherents et fed G attendu :3427.2 , obtenu: ". calculerPrixTtcAnnuel(3005,0,"G") ."<br>";
+// echo "pour 10001 adherents attendu :14400 , obtenu: ". calculerPrixTtcAnnuel(10001,0,"autre") ."<br>";
+// echo "pour 10001 adherents et fed G attendu :12240 , obtenu: ". calculerPrixTtcAnnuel(10001,0,"G") ."<br>";
 
 //test calcul prix section 
-echo "pour 60 adherents 10 section ,prix section attendu :720 , obetenu: ". calculerPrixTtcAnnuel(60,10,"autre") ."<br>";
-echo "pour 1001 adherents (1section offerte) 10 section ,prix section attendu :648 , obetenu: ". calculerPrixTtcAnnuel(1001,10,"autre") ."<br>";
-echo "pour 60 adherents 10 section fed N ( 3 section off.) ,prix section attendu :504 , obetenu: ". calculerPrixTtcAnnuel(60,10,"N") ."<br>";
-echo "pour 60 adherents 15 section fed B ( -30%) ,prix section attendu :756 , obetenu: ". calculerPrixTtcAnnuel(60,15,"B") ."<br>";
-echo "pour 1001 adherents fed N (4section offerte) 3 section ,prix section attendu :0 , obetenu: ". calculerPrixTtcAnnuel(1001,3,"N") ."<br>";
+// echo "pour 60 adherents 10 section ,prix section attendu :720 , obtenu: ". calculerPrixTtcAnnuel(60,10,"autre") ."<br>";
+// echo "pour 1001 adherents (1section offerte) 10 section ,prix section attendu :648 , obtenu: ". calculerPrixTtcAnnuel(1001,10,"autre") ."<br>";
+// echo "pour 60 adherents 10 section fed N ( 3 section off.) ,prix section attendu :504 , obtenu: ". calculerPrixTtcAnnuel(60,10,"N") ."<br>";
+// echo "pour 60 adherents 15 section fed B ( -30%) ,prix section attendu :756 , obtenu: ". calculerPrixTtcAnnuel(60,15,"B") ."<br>";
+// echo "pour 1001 adherents fed N (4section offerte) 3 section ,prix section attendu :0 , obtenu: ". calculerPrixTtcAnnuel(1001,3,"N") ."<br>";
 
 
-?>
+// test prix total ttc 
+echo "--------------- test de la fonction --------------- <br>";
+echo "pour 60 adherents 10 section ,prix section attendu :864 , obtenu: ". calculerPrixTtcAnnuel(60,10,"autre") ."<br>";
+echo "pour 10001 adherents 50 section(1 offerte) et fed G attendu :15768 , obtenu: ". calculerPrixTtcAnnuel(10001,50,"G") ."<br>";
+echo "pour 503 adherents 15 section fed B ( -30%) ,prix section attendu :1335.45 , obtenu: ". calculerPrixTtcAnnuel(503,15,"B") ."<br>";
